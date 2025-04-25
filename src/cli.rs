@@ -16,7 +16,7 @@ pub enum Commands {
         /// Amount of the transaction
         amount: f64,
         /// Category of the transaction
-        category: Option<String>,
+        category: Option<u32>,
     },
     /// Delete a transaction
     Delete {
@@ -26,7 +26,7 @@ pub enum Commands {
     /// List all transactions
     List {
         /// Filter transactions by category
-        category: Option<String>,
+        category: Option<u32>,
     },
     /// Show a summary of transactions for a given month, or overall
     Summary {
