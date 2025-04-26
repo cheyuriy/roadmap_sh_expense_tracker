@@ -1,6 +1,6 @@
 use super::models::{Transaction, Category, Limit};
 use std::collections::HashMap;
-use chrono::prelude::{Datelike, DateTime, Utc};
+use chrono::prelude::Utc;
 
 pub fn summary(transactions: Vec<&Transaction>, month: Option<String>, category: Option<&Category>) -> (f64, HashMap<String, f64>) {
     if let Some(month) = month { 

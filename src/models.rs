@@ -1,6 +1,5 @@
 use chrono::prelude::{DateTime, Utc};
 use serde::{Serialize, Deserialize};
-use tabled::Tabled;
 
 pub type TransactionId = u32;
 pub type CategoryId = u32;

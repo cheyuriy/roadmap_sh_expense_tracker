@@ -11,6 +11,7 @@ use store::Store;
 use models::{Transaction, Category};
 use summary::{summary, check_limit};
 use tabled::{builder::Builder, settings::Style};
+use csv::Writer;
 
 fn main() {
     let cli = CLI::parse();
@@ -72,6 +73,18 @@ fn main() {
             };
         }
         cli::Commands::Export { filename } => {
+            let transactions = store.list_transactions(None);
+            let mut wtr = Writer::from_path(filename.clone()).expect("Unable to create CSV writer");
+            for transaction in transactions {
+                wtr.write_record(&[
+                    transaction.id().to_string(),
+                    transaction.description().to_string(),
+                    transaction.amount().to_string(),
+                    transaction.datetime().to_string(),
+                    transaction.category().map_or("None".to_string(), |cat| cat.name().to_string()),
+                ]).expect("Unable to write record");
+            }
+            wtr.flush().expect("Unable to flush CSV writer");
             println!("Exporting transactions to: {}", filename);
         }
         cli::Commands::Category { category_subcommand } => match category_subcommand {
