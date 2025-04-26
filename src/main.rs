@@ -31,7 +31,7 @@ fn main() {
             if let Some(limit) = limit {
                 let remaining = check_limit(store.list_transactions(None), limit);
                 if remaining < 0.0 {
-                    println!("Spending limit of {:?} exceeded!", limit);
+                    println!("Spending limit of {:?} exceeded by {:?}!", limit, remaining.abs());
                 }
             }
         }
@@ -45,6 +45,11 @@ fn main() {
             } else {
                 None
             };
+            if let Some(ref cat) = category {
+                println!("Showing transactions for category: {:?}", cat.name());
+            } else {
+                println!("Showing all transactions");
+            }
             let transactions = store.list_transactions(category);
             let table = create_table_transactions(transactions);
             println!("{}", table);
@@ -57,9 +62,21 @@ fn main() {
             };
             let (total, by_day) = summary(store.list_transactions(None), Some(month.clone()), category.as_ref());
             if month == "overall" {
-                println!("Showing summary for all transactions:");
+                println!("Showing summary for:");
+                println!("\t- any month");
+                if let Some(ref cat) = category {
+                    println!("\t- category: {:?}", cat.name());
+                } else {
+                    println!("\t- any category");
+                }
             } else {
-                println!("Showing summary for month {:?}:", month);
+                println!("Showing summary for: month {:?}:", month);
+                println!("\t- month: {:?}", month);
+                if let Some(ref cat) = category {
+                    println!("\t- category: {:?}", cat.name());
+                } else {
+                    println!("\t- any category");
+                }
             }
             let table = create_table_by_day(by_day, total);
             println!("{}", table);

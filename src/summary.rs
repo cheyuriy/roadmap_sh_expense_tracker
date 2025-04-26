@@ -28,7 +28,6 @@ pub fn summary(transactions: Vec<&Transaction>, month: Option<String>, category:
             *acc.entry(day).or_insert(0.0) += transaction.amount();
             acc
         });
-        println!("{:?}", by_day_total);
         (month_total, by_day_total)
     } else {
         panic!("Invalid month format. Use YYYY-MM or 'overall'.");
