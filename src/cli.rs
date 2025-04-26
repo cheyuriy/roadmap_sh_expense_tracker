@@ -33,10 +33,11 @@ pub enum Commands {
         /// Month in the format YYYY-MM, or "overall" for all transactions
         #[arg(default_value = "overall")]
         month: String,
+        category: Option<u32>,
     },
     /// Limits spending for the current month
     Limit {
-        /// Amount to limit spending to
+        /// Amount to limit spending to. Set to 0 to remove the limit
         amount: f64,
     },
     /// Export all transactions to a CSV file

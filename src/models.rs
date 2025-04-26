@@ -1,8 +1,10 @@
 use chrono::prelude::{DateTime, Utc};
 use serde::{Serialize, Deserialize};
+use tabled::Tabled;
 
 pub type TransactionId = u32;
 pub type CategoryId = u32;
+pub type Limit = f64;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Transaction {
@@ -35,6 +37,18 @@ impl Transaction {
     pub fn remove_category(&mut self) {
         self.category = None;
     }
+
+    pub fn datetime(&self) -> DateTime<Utc> {
+        self.datetime
+    }
+
+    pub fn amount(&self) -> f64 {
+        self.amount
+    }
+
+    pub fn description(&self) -> &str {
+        &self.description
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
@@ -52,14 +66,9 @@ impl Category {
         self.id
     }
     
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Limit(f64);
-
-impl Limit {
-    pub fn new(amount: f64) -> Self {
-        Limit(amount)
+    pub fn name(&self) -> &str {
+        &self.name
     }
 }
+
 

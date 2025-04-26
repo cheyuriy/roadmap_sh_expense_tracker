@@ -1,6 +1,6 @@
-use super::models::{Transaction, Category, TransactionId, CategoryId};
+use super::models::{Transaction, Category, TransactionId, CategoryId, Limit};
 use serde::{Serialize, Deserialize};
-use std::fs;
+use std::{fs, vec};
 use std::io::Write;
 use std::path::Path;
 
@@ -16,7 +16,7 @@ pub struct Store {
     #[serde(skip)]
     max_category_id: CategoryId,
 
-    limit: Option<f64>,
+    limit: Option<Limit>,
 
     #[serde(skip)]
     path: String
@@ -88,11 +88,13 @@ impl Store {
     }
 
     pub fn list_transactions(&self, category: Option<Category>) -> Vec<&Transaction> {
-        if let Some(_) = category {
+        let mut transactions: Vec<&Transaction> = if let Some(_) = category {
             self.transactions.iter().filter(|&transaction| transaction.category() == category).collect()
         } else {
             self.transactions.iter().collect()
-        }
+        };
+        transactions.sort_by(|a, b| a.datetime().cmp(&b.datetime()));
+        transactions
     }
 
     pub fn get_category(&self, id: CategoryId) -> Option<Category> {
@@ -126,10 +128,21 @@ impl Store {
         self.persist();
     }
 
-    pub fn list_categories(&self) -> &Vec<Category> {
-        &self.categories
+    pub fn list_categories(&self) -> Vec<&Category> {
+        self.categories.iter().collect()
     }
 
-    
+    pub fn set_limit(&mut self, limit: f64) {
+        if limit > 0.0 {
+            self.limit = Some(limit);
+        } else {
+            self.limit = None;
+        }
+        self.persist();
+    }
+
+    pub fn limit(&self) -> Option<Limit> {
+        self.limit
+    }
     
 }
