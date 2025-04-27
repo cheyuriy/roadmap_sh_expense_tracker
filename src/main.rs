@@ -123,6 +123,8 @@ fn main() {
     }
 }
 
+/// Helper function to create table for transactions
+/// It takes a vector of transactions and returns a string representation of the table.
 fn create_table_transactions(transactions: Vec<&Transaction>) -> String {
     let mut builder = Builder::default();
     for transaction in transactions {
@@ -141,6 +143,8 @@ fn create_table_transactions(transactions: Vec<&Transaction>) -> String {
     builder.build().with(Style::modern()).to_string()
 }
 
+/// Helper function to create table for categories
+/// It takes a vector of categories and returns a string representation of the table.
 fn create_table_categories(categories: Vec<&Category>) -> String {
     let mut builder = Builder::default();
     for category in categories {
@@ -156,6 +160,9 @@ fn create_table_categories(categories: Vec<&Category>) -> String {
     builder.build().with(Style::modern()).to_string()
 }
 
+/// Helper function to create table for summary by day
+/// It takes a HashMap of days and their corresponding totals, and the overall total.
+/// It returns a string representation of the table, with the days sorted in ascending order and the overall total at the end.
 fn create_table_by_day(by_day: HashMap<String, f64>, total: f64) -> String {
     let mut builder = Builder::default();
 
